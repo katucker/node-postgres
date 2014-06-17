@@ -4,7 +4,6 @@
       'target_name': 'binding',
       'sources': ['src/binding.cc'],
       'include_dirs': [
-        '<!@(pg_config --includedir)',
         '<!(node -e "require(\'nan\')")'
       ],
       'conditions' : [
@@ -12,6 +11,9 @@
           'conditions' : [
             ['"<!@(cmd /C where /Q pg_config || echo n)"!="n"',
               {
+		      	'include_dirs': [
+        			'<!@(pg_config --includedir)',
+      			],
                 'libraries' : ['libpq.lib'],
                 'msvs_settings': {
                   'VCLinkerTool' : {
@@ -25,9 +27,12 @@
           ]
         }, { # OS!="win"
           'conditions' : [
-            ['"y"!="n"', # ToDo: add pg_config existance condition that works on linux
+            ['"<!@(find /usr /bin -executable -name pg_config -quit || echo n)"!="n"',
               {
-                'libraries' : ['-lpq -L<!@(pg_config --libdir)']
+		      	'include_dirs': [
+        			'<!@(`find /usr /bin -executable -name pg_config -print -quit` --includedir)',
+      			],
+                'libraries' : ['-lpq -L<!@(`find /usr /bin -executable -name pg_config -print -quit` --libdir)']
               }
             ]
           ]
