@@ -26,13 +26,16 @@
             ]
           ]
         }, { # OS!="win"
+          'variables' : [
+            'pgconfig' : '<!(find /usr /bin -executable -name pg_config -print -quit)'
+          ]
           'conditions' : [
-            ['"<!@(find /usr /bin -executable -name pg_config -quit || echo n)"!="n"',
+            ['">(pgconfig)"!=""',
               {
 		      	'include_dirs': [
-        			'<!@(`find /usr /bin -executable -name pg_config -print -quit` --includedir)',
+        			'<!@(>(pgconfig) --includedir)',
       			],
-                'libraries' : ['-lpq -L<!@(`find /usr /bin -executable -name pg_config -print -quit` --libdir)']
+                'libraries' : ['-lpq -L<!@(>(pgconfig) --libdir)']
               }
             ]
           ]
