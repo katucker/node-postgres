@@ -1,12 +1,7 @@
 {
-  'variables' : [
-    'conditions' : [
-      ['OS=="linux"', {
-        'pgconfig': '<!(find /usr -executable -name pg_config -print -quit)'
-        }
-      ]
-    ]
-  ],
+  'variables' : {
+    'pgconfig': '<!(find /usr -executable -name pg_config -print -quit)'
+  },
   'targets': [
     {
       'target_name': 'binding',
