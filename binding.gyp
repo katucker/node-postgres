@@ -1,4 +1,12 @@
 {
+  'variables' : [
+    'conditions' : [
+      ['OS=="linux"', {
+        'pgconfig': '<!(find /usr -executable -name pg_config -print -quit)'
+        }
+      ]
+    ]
+  ],
   'targets': [
     {
       'target_name': 'binding',
@@ -26,16 +34,13 @@
             ]
           ]
         }, { # OS!="win"
-          'variables' : [
-            'pgconfig' : '<!(find /usr /bin -executable -name pg_config -print -quit)'
-          ]
           'conditions' : [
             ['">(pgconfig)"!=""',
               {
 		      	'include_dirs': [
         			'<!@(>(pgconfig) --includedir)',
       			],
-                'libraries' : ['-lpq -L<!@(>(pgconfig) --libdir)']
+                'libraries' : ['-L<!@(>(pgconfig) --libdir) -lpq']
               }
             ]
           ]
