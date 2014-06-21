@@ -25,12 +25,12 @@
           'msvs_settings': {
             'VCLinkerTool' : {
               'AdditionalLibraryDirectories' : [
-                '<!@(pg_config --libdir)\\'
+                '<!@(<(pgconfig) --libdir)\\'
               ]
             },
           }
         }, { # OS!="win"
-          'libraries' : ['-L<!@(>(pgconfig) --libdir) -lpq']
+          'libraries' : ['-L<!@(<(pgconfig) --libdir) -lpq']
         }]
       ]
     }
