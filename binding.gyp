@@ -4,12 +4,20 @@
       'variables': {
         'pgconfig': '<!@(cmd /C where /Q pg_config)'
       }
-    }, { # 'OS!="win"'
+     }
+    ],
+    [ 
+     'OS=="linux"', {
       'variables' : {
         # Find the full path to the pg_config command, since it may not be on the PATH.
-        'pgconfig': '<!(find /usr -executable -name pg_config -print -quit)'
+        'pgconfig': '<!(find /usr/bin /usr/local/bin /usr/pg* /opt -executable -name pg_config -print -quit)'
       }
-    }]
+     }, { # Default to assumption that pg_config is on the PATH.
+      'variables': {
+        'pgconfig': 'pg_config'
+      }
+     }
+    ]
   ],
   'targets': [
     {
